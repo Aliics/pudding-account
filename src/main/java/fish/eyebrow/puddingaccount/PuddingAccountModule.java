@@ -1,7 +1,11 @@
 package fish.eyebrow.puddingaccount;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.google.inject.name.Names;
+import io.vertx.core.DeploymentOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,5 +30,12 @@ public class PuddingAccountModule extends AbstractModule {
         catch (final Exception e) {
             logger.warn("Exception occurred when setting up module: {}", e.getMessage());
         }
+    }
+
+
+    @Provides
+    @Singleton
+    private DeploymentOptions deploymentOptions(@Named("server.verticle.instances") final int verticlesInstances) {
+        return new DeploymentOptions().setInstances(verticlesInstances);
     }
 }
