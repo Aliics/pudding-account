@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import io.vertx.core.DeploymentOptions;
+import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +22,8 @@ public class PuddingAccountModule extends AbstractModule {
     @Override
     protected void configure() {
         try {
+            bind(AccountFetchHandler.class).toInstance(new AccountFetchHandler());
+
             final Properties puddingAccountProperties = new Properties();
             final InputStream propertyStream = ClassLoader.getSystemResourceAsStream("pudding_account.properties");
             puddingAccountProperties.load(Objects.requireNonNull(propertyStream));
@@ -35,7 +38,19 @@ public class PuddingAccountModule extends AbstractModule {
 
     @Provides
     @Singleton
-    private DeploymentOptions deploymentOptions(@Named("server.verticle.instances") final int verticlesInstances) {
-        return new DeploymentOptions().setInstances(verticlesInstances);
+    @Named("puddingAccountConfig")
+    private JsonObject puddingAccountConfig(@Named("server.port") final int port) {
+        return new JsonObject()
+                .put("port", port);
+    }
+
+
+    @Provides
+    @Singleton
+    private DeploymentOptions deploymentOptions(@Named("server.verticle.instances") final int verticlesInstances,
+                                                @Named("puddingAccountConfig") final JsonObject config) {
+        return new DeploymentOptions()
+                .setConfig(config)
+                .setInstances(verticlesInstances);
     }
 }
