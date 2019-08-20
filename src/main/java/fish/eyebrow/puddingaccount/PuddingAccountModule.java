@@ -1,6 +1,7 @@
 package fish.eyebrow.puddingaccount;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -38,19 +39,26 @@ public class PuddingAccountModule extends AbstractModule {
 
     @Provides
     @Singleton
-    @Named("puddingAccountConfig")
-    private JsonObject puddingAccountConfig(@Named("server.port") final int port) {
+    private JsonObject puddingAccountConfig(@Named("server.port") final int port,
+                                            @Named("server.uri.account") final String accountURI) {
         return new JsonObject()
-                .put("port", port);
+                .put("port", port)
+                .put("accountURI", accountURI);
     }
 
 
+    @Inject
     @Provides
     @Singleton
-    private DeploymentOptions deploymentOptions(@Named("server.verticle.instances") final int verticlesInstances,
-                                                @Named("puddingAccountConfig") final JsonObject config) {
-        return new DeploymentOptions()
-                .setConfig(config)
-                .setInstances(verticlesInstances);
+    private DeploymentOptions deploymentOptions(final JsonObject puddingAccountConfig) {
+        return new DeploymentOptions().setConfig(puddingAccountConfig);
+    }
+
+
+    @Inject
+    @Provides
+    @Singleton
+    private PuddingAccountVerticle puddingAccountVerticle(final AccountFetchHandler accountFetchHandler) {
+        return new PuddingAccountVerticle(accountFetchHandler);
     }
 }

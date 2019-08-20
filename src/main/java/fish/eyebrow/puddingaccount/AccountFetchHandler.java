@@ -7,6 +7,6 @@ public class AccountFetchHandler implements Handler<RoutingContext> {
 
     @Override
     public void handle(final RoutingContext event) {
-        event.response().write("Hello, World!").end();
+        event.response().end("Hello, World!");
     }
 }

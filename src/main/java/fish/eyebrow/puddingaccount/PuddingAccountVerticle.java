@@ -1,27 +1,32 @@
 package fish.eyebrow.puddingaccount;
 
-import com.google.inject.Inject;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 
 public class PuddingAccountVerticle extends AbstractVerticle {
 
-    @Inject
     private AccountFetchHandler accountFetchHandler;
 
     private HttpServer httpServer;
 
 
+    PuddingAccountVerticle(final AccountFetchHandler accountFetchHandler) {
+        this.accountFetchHandler = accountFetchHandler;
+    }
+
+
     @Override
     public void start() {
-        httpServer = vertx.createHttpServer();
+        final Integer port = config().getInteger("port");
+        final String accountURI = config().getString("accountURI");
 
         final Router router = Router.router(vertx);
-        router.get("/account").handler(accountFetchHandler);
+        router.get(accountURI).handler(accountFetchHandler);
 
+        httpServer = vertx.createHttpServer();
         httpServer.requestHandler(router);
-        httpServer.listen(config().getInteger("port"));
+        httpServer.listen(port);
     }
 
 

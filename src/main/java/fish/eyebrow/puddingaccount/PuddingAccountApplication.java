@@ -9,8 +9,9 @@ public class PuddingAccountApplication {
 
     public static void main(String[] args) {
         final Injector injector = Guice.createInjector(new PuddingAccountModule());
-        final DeploymentOptions verticleOptions = injector.getInstance(DeploymentOptions.class);
+        final PuddingAccountVerticle puddingAccountVerticle = injector.getInstance(PuddingAccountVerticle.class);
+        final DeploymentOptions deploymentOptions = injector.getInstance(DeploymentOptions.class);
 
-        Vertx.vertx().deployVerticle(PuddingAccountVerticle.class, verticleOptions);
+        Vertx.vertx().deployVerticle(puddingAccountVerticle, deploymentOptions);
     }
 }
