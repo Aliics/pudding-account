@@ -1,4 +1,4 @@
-package fish.eyebrow.puddingaccount;
+package fish.eyebrow.puddingaccount.handler;
 
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerResponse;

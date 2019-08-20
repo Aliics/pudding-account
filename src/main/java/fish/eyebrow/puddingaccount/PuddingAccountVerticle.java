@@ -1,5 +1,7 @@
 package fish.eyebrow.puddingaccount;
 
+import fish.eyebrow.puddingaccount.handler.AccountFetchHandler;
+import fish.eyebrow.puddingaccount.handler.AccountLoginHandler;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
@@ -13,8 +15,9 @@ public class PuddingAccountVerticle extends AbstractVerticle {
     private AccountLoginHandler accountLoginHandler;
 
 
-    PuddingAccountVerticle(final AccountFetchHandler accountFetchHandler) {
+    PuddingAccountVerticle(final AccountFetchHandler accountFetchHandler, final AccountLoginHandler accountLoginHandler) {
         this.accountFetchHandler = accountFetchHandler;
+        this.accountLoginHandler = accountLoginHandler;
     }
 
 

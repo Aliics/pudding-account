@@ -6,6 +6,8 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
+import fish.eyebrow.puddingaccount.handler.AccountFetchHandler;
+import fish.eyebrow.puddingaccount.handler.AccountLoginHandler;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
@@ -24,6 +26,7 @@ public class PuddingAccountModule extends AbstractModule {
     protected void configure() {
         try {
             bind(AccountFetchHandler.class).toInstance(new AccountFetchHandler());
+            bind(AccountLoginHandler.class).toInstance(new AccountLoginHandler());
 
             final Properties puddingAccountProperties = new Properties();
             final InputStream propertyStream = ClassLoader.getSystemResourceAsStream("pudding_account.properties");
@@ -58,7 +61,7 @@ public class PuddingAccountModule extends AbstractModule {
     @Inject
     @Provides
     @Singleton
-    private PuddingAccountVerticle puddingAccountVerticle(final AccountFetchHandler accountFetchHandler) {
-        return new PuddingAccountVerticle(accountFetchHandler);
+    private PuddingAccountVerticle puddingAccountVerticle(final AccountFetchHandler accountFetchHandler, final AccountLoginHandler accountLoginHandler) {
+        return new PuddingAccountVerticle(accountFetchHandler, accountLoginHandler);
     }
 }

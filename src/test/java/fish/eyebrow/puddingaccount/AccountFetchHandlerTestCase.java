@@ -1,5 +1,6 @@
 package fish.eyebrow.puddingaccount;
 
+import fish.eyebrow.puddingaccount.handler.AccountFetchHandler;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import org.junit.jupiter.api.BeforeEach;
