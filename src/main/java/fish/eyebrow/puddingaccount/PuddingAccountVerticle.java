@@ -10,6 +10,8 @@ public class PuddingAccountVerticle extends AbstractVerticle {
 
     private HttpServer httpServer;
 
+    private AccountLoginHandler accountLoginHandler;
+
 
     PuddingAccountVerticle(final AccountFetchHandler accountFetchHandler) {
         this.accountFetchHandler = accountFetchHandler;
@@ -23,6 +25,7 @@ public class PuddingAccountVerticle extends AbstractVerticle {
 
         final Router router = Router.router(vertx);
         router.get(accountURI).handler(accountFetchHandler);
+        router.post(accountURI).handler(accountLoginHandler);
 
         httpServer = vertx.createHttpServer();
         httpServer.requestHandler(router);
