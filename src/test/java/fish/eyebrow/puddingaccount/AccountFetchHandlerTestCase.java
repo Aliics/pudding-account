@@ -5,7 +5,7 @@ import io.vertx.ext.web.RoutingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,7 +16,7 @@ class AccountFetchHandlerTestCase {
     @Mock
     private RoutingContext mockContext;
 
-    @Mock
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private HttpServerResponse mockResponse;
 
     private AccountFetchHandler accountFetchHandler;
@@ -33,6 +33,7 @@ class AccountFetchHandlerTestCase {
     void fetchingOpenSession() {
         accountFetchHandler.handle(mockContext);
 
-        Mockito.verify(mockContext.response()).end(ArgumentMatchers.eq("Hello, World!"));
+        Mockito.verify(mockContext.response()).setStatusCode(200);
+        Mockito.verify(mockContext.response()).end();
     }
 }
