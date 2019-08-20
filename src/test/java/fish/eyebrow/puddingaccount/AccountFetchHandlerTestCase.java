@@ -25,7 +25,6 @@ class AccountFetchHandlerTestCase {
     @BeforeEach
     void setUp() {
         accountFetchHandler = new AccountFetchHandler();
-
         Mockito.when(mockContext.response()).thenReturn(mockResponse);
     }
 
